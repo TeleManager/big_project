@@ -20,7 +20,7 @@ from account.forms import PasswordChangeForm
 from django.urls import reverse_lazy
 import csv
 from django.contrib.auth.decorators import login_required
-
+from .forms import ProfileUpdateForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from client.models import Client
@@ -47,11 +47,6 @@ def signup(request):
             
     return render(request, 'registration/signup.html',{'form':form})
 
-<<<<<<< HEAD
-
-# 내 정보 수정  
-=======
->>>>>>> fe17ddb97d65672b06f14f72d132e5fb8328a369
 @login_required
 def profile_update(request):
     if request.method == 'POST':

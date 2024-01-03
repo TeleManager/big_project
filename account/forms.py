@@ -3,6 +3,7 @@ from django import forms
 from .models import Profile
 from django.contrib.auth.models import User
 from .models import CompanyFile
+from django.contrib.auth.models import User
 
 class SignupForm(UserCreationForm):
     
@@ -29,6 +30,10 @@ class ProfileUpdateForm(UserChangeForm):
         super().__init__(*args, **kwargs)
         self.fields['password'].widget = forms.HiddenInput()
         self.fields['password'].required = False
+        
+    def __init__(self, *args, **kwargs):
+        super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['readonly'] = True
 
         
 
