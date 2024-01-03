@@ -9,6 +9,7 @@ from .models import CompanyFile
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 from django.urls import reverse_lazy, reverse
+from django.contrib.auth.models import User
 import os
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
@@ -73,21 +74,17 @@ class PasswordChangeView(PasswordChangeView):
 
 # 비밀번호 찾기
 class UserPasswordResetView(PasswordResetView):
-    template_name = 'registration/password_reset.html'  # 템플릿을 변경하려면 이와 같은 형식으로 입력
+    template_name = 'registration/password_reset.html'
     success_url = reverse_lazy('account:password_reset_done')
     form_class = PasswordResetForm
 
     def form_valid(self, form):
         email = self.request.POST.get("email")
         if User.objects.filter(email=email).exists():
+            # 이메일이 존재하는 경우에만 super().form_valid(form) 호출
             return super().form_valid(form)
         else:
             return JsonResponse({'email_not_exists': True})
-
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-        # 존재하지 않는 이메일인 경우에 대한 처리
-        return JsonResponse({'email_not_exists': True})
 
 
 @login_required
