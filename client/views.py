@@ -262,15 +262,34 @@ def start_tm(request):
             )
        
         chatbots = [] # 챗봇 리스트 생성
+        
+        
+        # audio 폴더 생성하기(계정 폴더)
+        # 폴더가 존재하지 않으면 폴더를 생성
+        audio_path = f"./media/audio/{file_name}/"
+        if not os.path.exists(audio_path): # 폴더 존재하지 않을경우 생성
+            os.makedirs(audio_path)
+        else: # 폴더 존재할 경우 패스
+            pass
+        
         # 고객 하나씩 접근해서 정보 가져오기
         for c in clients:
             clients_info = [] # 고객 정보가 들어간 리스트
-           
+
             # 열 정보만 가져오기
             excluded_fields = ['user', 'tm_date']
             user_defined_fields = [field.name for field in Client._meta.get_fields() if not field.auto_created]
             client_values = [(field, getattr(c, field)) for field in user_defined_fields if field not in excluded_fields]
-           
+
+            # audio/계정 안에 고객당 폴더 생성하기
+            # 폴더가 존재하지 않으면 폴더를 생성
+            final_save_path = f"./media/audio/{file_name}/{c.id}"
+            if not os.path.exists(final_save_path): # 폴더 존재하지 않을경우 생성
+                os.makedirs(final_save_path)
+                # print(f"{audio_path} 폴더가 생성되었습니다.")
+            else: # 폴더 존재할 경우 패스
+                pass
+            
             # 질문지 생성부분
             ments = make_phrases(client_values, input_data, embeding_file_url, hf, llm)
             print(ments)
@@ -297,7 +316,8 @@ def start_tm(request):
                         voice="nova",
                         input=f"{q}",
                     )
-                    response.stream_to_file(f"{str(i)}.mp3")
+                    response.stream_to_file(f"{final_save_path}/{str(i)}.mp3")
+                    # response.stream_to_file(f"./{str(i)}.mp3")
                 except:
                     pass
  
