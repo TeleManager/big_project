@@ -78,7 +78,7 @@ def post_edit(request, pk):
         'form': form,
     })
 
-def Comment(request, pk):
+def Comment2(request, pk):
     post = get_object_or_404(Post, pk=pk)
     comments = CommentForm(request.POST)
     if comments.is_valid():
@@ -108,6 +108,11 @@ def comment_delete(request, pk, comment_id):
         # Handle cases where 'GET' request is received (e.g., direct URL access)
         messages.error(request, 'Invalid request method.')
         return redirect('post:post_detail', pk=pk)
+    
+    # post = get_object_or_404(Post, id=pk)
+    # comment = get_object_or_404(Comment, id=comment_id)
+    # comment.delete()   
+    # return redirect('post:post_detail', pk=pk)
 
 
 
