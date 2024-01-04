@@ -78,7 +78,7 @@
                 <button class='send-button' onclick='sendMessage()'>Send</button>
             </div>
         </div>
-        <div>
+        {% comment %} <div>
             <audio controls>녹음된 소리를 재생할 audio 엘리먼트</audio>
                     <br><br><br><br><br>
                     <div class="button-container">
@@ -92,7 +92,7 @@
                         <button id="playing" onclick="showButton('stoprecord');" style="display: none; background-image: url('{% static 'loading_recording/icons8-speech-bubble-60.gif' %}');" class="button-image"></button>
                     </div>
                 </div>
-        </div>
+        </div> {% endcomment %}
     </div>
 </div>
 
@@ -150,7 +150,7 @@
         }
     });
             
-    function showButton(val) {
+    /*function showButton(val) {
         var startrecordButton = document.getElementById('recordbutton');
         var playButton = document.getElementById('playbutton');
         var cantrecordimg = document.getElementById('no_record');
@@ -264,7 +264,7 @@
         if ($audioEl.src) {
             $audioEl.play();
         }
-    }
+    }*/
 </script>
 
 {% endblock %}

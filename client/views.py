@@ -419,38 +419,38 @@ def make_phrases(user_info, purpose, embeding_url, hf, llm):
     return result
 
 
-# 녹음한 파일을 저장하는 function
-@csrf_exempt
-@require_POST
-def save_audio(request):
+# # 녹음한 파일을 저장하는 function
+# @csrf_exempt
+# @require_POST
+# def save_audio(request):
     
-    audio_data = request.FILES.get('audio_data')
-    if audio_data:
-        ogg_save_path = os.path.join('../media/audio/', 'audio.ogg')
-        mp3_save_path = os.path.join('../media/audio/', 'audio.mp3')
+    # audio_data = request.FILES.get('audio_data')
+    # if audio_data:
+    #     ogg_save_path = os.path.join('../media/audio/', 'audio.ogg')
+    #     mp3_save_path = os.path.join('../media/audio/', 'audio.mp3')
  
-        # 원본 ogg 파일을 저장
-        with open(ogg_save_path, 'wb') as ogg_file:
-            for chunk in audio_data.chunks():
-                ogg_file.write(chunk)
+    #     # 원본 ogg 파일을 저장
+    #     with open(ogg_save_path, 'wb') as ogg_file:
+    #         for chunk in audio_data.chunks():
+    #             ogg_file.write(chunk)
 
-        # ogg 파일을 mp3로 변환
-        audio_segment = AudioSegment.from_file(ogg_save_path) # 여기가 문제.
+    #     # ogg 파일을 mp3로 변환
+    #     audio_segment = AudioSegment.from_file(ogg_save_path) # 여기가 문제.
 
-        # ffmpeg 경로 설정 (설치한 경로로 변경)
-        # AudioSegment.converter = "C:/path/to/ffmpeg"
+    #     # ffmpeg 경로 설정 (설치한 경로로 변경)
+    #     # AudioSegment.converter = "C:/path/to/ffmpeg"
         
-        audio_segment.export(mp3_save_path, format='mp3')
+    #     audio_segment.export(mp3_save_path, format='mp3')
 
  
-        # ogg 파일을 mp3로 변환
-        audio_segment = AudioSegment.from_file(ogg_save_path) # 여기가 문제.
+    #     # ogg 파일을 mp3로 변환
+    #     audio_segment = AudioSegment.from_file(ogg_save_path) # 여기가 문제.
  
-        # ffmpeg 경로 설정 (설치한 경로로 변경)
-        # AudioSegment.converter = "C:/path/to/ffmpeg"
+    #     # ffmpeg 경로 설정 (설치한 경로로 변경)
+    #     # AudioSegment.converter = "C:/path/to/ffmpeg"
        
-        audio_segment.export(mp3_save_path, format='mp3')
+    #     audio_segment.export(mp3_save_path, format='mp3')
  
-        return JsonResponse({'message': 'Audio file saved and converted to MP3 successfully.'})
-    else:
-        return JsonResponse({'message': 'No audio data received.'})
+    #     return JsonResponse({'message': 'Audio file saved and converted to MP3 successfully.'})
+    # else:
+    #     return JsonResponse({'message': 'No audio data received.'})
