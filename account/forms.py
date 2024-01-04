@@ -8,7 +8,14 @@ from django.contrib.auth.models import User
 class SignupForm(UserCreationForm):
     
     class Meta(UserCreationForm.Meta):
-        fields = UserCreationForm.Meta.fields + ('email', )
+        fields = UserCreationForm.Meta.fields + ('email', 'username')
+        
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if len(username) < 3:
+            raise forms.ValidationError('아이디는 최소 3자 이상이어야 합니다.')
+        # 추가적인 규칙을 여기에 추가할 수 있습니다.
+        return username
         
     def save(self, commit=True):
         user = super().save(commit=False)  # User 객체를 먼저 가져오되, 아직 저장하지 않습니다.
