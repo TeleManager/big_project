@@ -98,18 +98,21 @@ DATABASES = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    # {
-    #     "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    # },
-    # {
-    #     "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    # },
-    # {
-    #     "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    # },
-    # {
-    #     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    # },
+     {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        },
+        'ERROR_MESSAGES': {
+            'min_length': "비밀번호는 적어도 8자 이상이어야 합니다.",
+        },
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.SymbolValidator',
+        'ERROR_MESSAGES': {
+            'password_no_symbol': "비밀번호는 최소 1개 이상의 특수 문자를 포함해야 합니다.",
+        },
+    },
 ]
 
 
