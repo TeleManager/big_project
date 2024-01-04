@@ -18,13 +18,42 @@
             <h3>회원가입</h3>
             <br>
             <div class="inner">
-                <form method="post" action="#">
+                <form method="post" action="{% url 'account:signup' %}" id="signup-form">
+                    {% csrf_token %}
                     <div class="row uniform">
-                        {% csrf_token %}
                         <table>
-                            {{ form.as_table }}
+                            <tr>
+                                <td>
+                                    {{ form.username.label_tag }}
+                                    {{ form.username }}
+                                    <!-- 아이디 규칙 설명 추가 -->
+                                    <div style="font-size: 12px; color: #555;">*영문, 숫자를 포함한 3자리 이상으로 입력하세요.</div>
+                                    <div id="username-error" style="color: red;"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ form.email.label_tag }}
+                                    {{ form.email }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ form.password1.label_tag }}
+                                    {{ form.password1 }}
+                                    <!-- 비밀번호 규칙 설명 추가 -->
+                                    <div style="font-size: 12px; color: #555;">*영문, 숫자, 특수문자를 포함한 8자리 이상으로 입력하세요.</div>
+                                    <div id="password-error" style="color: red;"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ form.password2.label_tag }}
+                                    {{ form.password2 }}
+                                    <div id="password2-error" style="color: red;"></div>
+                                </td>
+                            </tr>
                         </table>
-                        <div id="password-error" style="color: red;"></div>
                     </div>
                     <br>
                     <!-- login -->
@@ -40,17 +69,71 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Submit 버튼 클릭 시 비밀번호 일치 여부 검사
-            document.getElementById("submit-btn").addEventListener("click", function (event) {
-                var password1 = document.getElementById("id_password1").value;
-                var password2 = document.getElementById("id_password2").value;
-                var errorDiv = document.getElementById("password-error");
+            var usernameInput = document.getElementById("id_username");
+            var passwordInput1 = document.getElementById("id_password1");
+            var passwordInput2 = document.getElementById("id_password2");
+            var usernameErrorDiv = document.getElementById("username-error");
+            var passwordErrorDiv = document.getElementById("password-error");
 
-                if (password1 !== password2) {
-                    errorDiv.innerText = "비밀번호가 일치하지 않습니다.";
-                    event.preventDefault();  // 폼 제출 방지
+            function validateUsernameRules(username) {
+                // 아이디 규칙에 따라 검사하고 오류 메시지를 반환합니다.
+                if (username.length < 3) {
+                    return "아이디는 최소 3자 이상이어야 합니다.";
+                }
+                // 영문과 숫자를 최소 하나씩 포함하는지 확인
+                if (!/[a-zA-Z]/.test(username) || !/\d/.test(username)) {
+                    return "아이디는 영문과 숫자를 최소 하나씩 포함해야 합니다.";
+                }
+                return "";  // 규칙에 모두 부합하는 경우 빈 문자열 반환
+            }
+
+            function validatePasswordRules(password) {
+                // 비밀번호 규칙에 따라 검사하고 오류 메시지를 반환합니다.
+                if (password.length < 8) {
+                    return "비밀번호는 최소 8자 이상이어야 합니다.";
+                }
+                if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                    return "비밀번호는 특수문자를 최소 1개 이상 포함해야 합니다.";
+                }
+                if (!/\d/.test(password)) {
+                    return "비밀번호는 숫자를 최소 1개 이상 포함해야 합니다.";
+                }
+                return "";  // 규칙에 모두 부합하는 경우 빈 문자열 반환
+            }
+
+            function updateUsernameError() {
+                // 아이디 규칙 확인
+                var errorMessage = validateUsernameRules(usernameInput.value);
+                usernameErrorDiv.innerText = errorMessage;
+            }
+
+            function updatePasswordError() {
+                // 두 비밀번호 일치 여부 확인
+                if (passwordInput1.value !== passwordInput2.value) {
+                    document.getElementById("password2-error").innerText = "비밀번호가 일치하지 않습니다.";
                 } else {
-                    errorDiv.innerText = "";  // 오류 메시지 초기화
+                    // 비밀번호 규칙 확인
+                    var errorMessage = validatePasswordRules(passwordInput1.value);
+                    passwordErrorDiv.innerText = errorMessage;
+                }
+            }
+
+            // 아이디 입력 시 이벤트 리스너 추가
+            usernameInput.addEventListener("input", updateUsernameError);
+
+            // 비밀번호 입력 시 이벤트 리스너 추가
+            passwordInput1.addEventListener("input", updatePasswordError);
+            passwordInput2.addEventListener("input", function () {
+                updatePasswordError();
+                document.getElementById("password2-error").innerText = ""; // Clear error when typing in password2
+            });
+
+            // Submit 버튼 클릭 시 이벤트 리스너 추가
+            document.getElementById("submit-btn").addEventListener("click", function (event) {
+                updateUsernameError();  // 아이디 규칙 확인
+                updatePasswordError();  // 비밀번호 일치 여부 및 규칙 확인
+                if (usernameErrorDiv.innerText !== "" || passwordErrorDiv.innerText !== "") {
+                    event.preventDefault();  // 폼 제출 방지
                 }
             });
         });

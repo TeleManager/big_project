@@ -26,10 +26,12 @@ from django.contrib.auth import authenticate, login, logout
 from client.models import Client
 from django.contrib.auth.views import LoginView
 from .models import Profile
+from django.http import JsonResponse
 
 def index(request):
     return render(request, 'registration/login.html')
-
+    
+    
 # 개인정보 동의
 # @method_decorator(logout_message_required, name='dispatch')
 class AgreementView(View):
