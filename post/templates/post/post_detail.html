@@ -63,9 +63,9 @@
                 <div class="card-body">
                     <i class="fas fa-user-circle" id="peopleicon"></i>
                     <p2 class="writer"> {{ comment.user }}  | </p2>
-                    <p2 class="coment_update"> {{ comment.updated }} </p2>
+                    <p2 class="coment_content"> {{ comment.content }}</p2>
                     <br>
-                    <p2 class="coment_content"> {{ comment.content }}</p2> 
+                    <p2 class="coment_update"> {{ comment.updated }} </p2>
                     <br>
                     {% if user.is_authenticated and user == comment.user %}
                     <!-- 현재 로그인한 사용자와 댓글 작성자가 일치하면 삭제 버튼 표시 -->

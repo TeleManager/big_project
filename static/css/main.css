@@ -8,6 +8,18 @@
 	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
 */
 
+/*yh*/
+.button-container {
+	display: flex;
+	gap: 0; /* 이미지 사이의 간격을 0으로 설정 */
+	justify-content: space-around; /* 가로로 정렬되도록 함 */
+}
+/* 이미지 크기 조절 스타일 */
+.button-image {
+	width: 60px; /* 원하는 너비로 조절 */
+	height: 60px; /* 원하는 높이로 조절 */
+}
+
 
 
 /*hj*/

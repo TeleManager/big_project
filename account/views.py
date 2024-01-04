@@ -105,6 +105,11 @@ class UserPasswordResetView(PasswordResetView):
             return JsonResponse({'email_not_exists': True})
 
 
+def error_page(request):
+    return render(request, 'upload/error.html', {'error_message': '잘못된 요청입니다.'})
+
+WHITE_LIST = ['csv'] # 허용하는 확장자 제한
+
 @login_required
 def file_upload(request):
     if request.method == 'POST':
@@ -114,10 +119,12 @@ def file_upload(request):
             user_id = request.user.id
             combined_name = f"{user_id}_{uploaded_file.name}"
 
-            # 데이터베이스에서 파일 이름과 사용자 ID로 중복 확인
-            if CompanyFile.objects.filter(file=combined_name, user=request.user).exists():
-                messages.warning(request, '동일한 파일 이름이 이미 존재합니다.')
-                return redirect('client:list')
+            # 파일 확장자 검사
+            file_extension = uploaded_file.name.split('.')[-1].lower()
+            print(file_extension)
+            if file_extension not in WHITE_LIST:
+                return render(request, 'upload/error.html', {'error_message': '잘못된 파일 형식입니다. csv 형식의 파일을 제출해주십시오.'})
+            
 
             fs = FileSystemStorage(location='media/company_data_files/')
 

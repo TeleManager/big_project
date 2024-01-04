@@ -2,7 +2,7 @@ from django.urls import path, reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView
 from . import views
 from .models import *
-from .views import ClientListView
+from .views import ClientListView, save_audio
 from django.shortcuts import render
 
 
@@ -22,10 +22,12 @@ urlpatterns = [
     path('delete_selected/', views.DeleteSelectedClientsView.as_view(), name='delete_selected'),
     path('selected_items/', views.selected_items, name='selected_items'),
     path('start_tm/',views.start_tm, name='start_tm'),
+    path('error/', views.error_page, name='error'),
 
 
     path('delete_selected/', views.DeleteSelectedClientsView.as_view(), name='delete_selected'),
     path('audio/', audio, name='audio'),
+    path('save_audio/', views.save_audio, name='save_audio'),
 ]
 
 
